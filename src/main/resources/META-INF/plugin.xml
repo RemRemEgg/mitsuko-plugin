@@ -1,0 +1,37 @@
+<idea-plugin>
+    <id>org.remremegg.mitsuko_plugin</id>
+    <name>Mitsuko</name>
+    <vendor email="remremegg@gmail.com">RemRemEgg</vendor>
+
+    <description><![CDATA[Code Highlighting and Completion for Mitsuko
+    <a href="https://github.com/RemRemEgg/mitsuko">Github</a>]]></description>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType
+                name="Mitsuko"
+                implementationClass="mitsuko_plugin.MitsukoFileType"
+                fieldName="INSTANCE"
+                language="Mitsuko"
+                extensions="msk"/>
+        <lang.parserDefinition
+                language="Mitsuko"
+                implementationClass="mitsuko_plugin.MitsukoParserDefinition"/>
+        <lang.syntaxHighlighterFactory
+                language="Mitsuko"
+                implementationClass="mitsuko_plugin.MitsukoSyntaxHighlighterFactory"/>
+        <colorSettingsPage
+                implementation="mitsuko_plugin.MitsukoColorSettingsPage"/>
+        <completion.contributor
+                language="Mitsuko"
+                implementationClass="mitsuko_plugin.MitsukoCompletionContributor"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>
