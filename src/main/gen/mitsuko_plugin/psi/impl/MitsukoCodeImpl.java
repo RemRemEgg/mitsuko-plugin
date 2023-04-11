@@ -35,44 +35,14 @@ public class MitsukoCodeImpl extends ASTWrapperPsiElement implements MitsukoCode
 
   @Override
   @Nullable
-  public MitsukoCode getCode() {
-    return findChildByClass(MitsukoCode.class);
-  }
-
-  @Override
-  @NotNull
-  public List<MitsukoESelector> getESelectorList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoESelector.class);
+  public MitsukoMultiline getMultiline() {
+    return findChildByClass(MitsukoMultiline.class);
   }
 
   @Override
   @Nullable
-  public MitsukoFlow getFlow() {
-    return findChildByClass(MitsukoFlow.class);
-  }
-
-  @Override
-  @Nullable
-  public MitsukoFor getFor() {
-    return findChildByClass(MitsukoFor.class);
-  }
-
-  @Override
-  @NotNull
-  public List<MitsukoNbt> getNbtList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoNbt.class);
-  }
-
-  @Override
-  @NotNull
-  public List<MitsukoScoreboard> getScoreboardList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoScoreboard.class);
-  }
-
-  @Override
-  @Nullable
-  public MitsukoShortScore getShortScore() {
-    return findChildByClass(MitsukoShortScore.class);
+  public MitsukoOneline getOneline() {
+    return findChildByClass(MitsukoOneline.class);
   }
 
 }

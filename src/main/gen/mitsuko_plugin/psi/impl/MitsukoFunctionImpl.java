@@ -29,14 +29,14 @@ public class MitsukoFunctionImpl extends ASTWrapperPsiElement implements Mitsuko
 
   @Override
   @NotNull
-  public MitsukoFnBody getFnBody() {
-    return findNotNullChildByClass(MitsukoFnBody.class);
+  public MitsukoFnDefine getFnDefine() {
+    return findNotNullChildByClass(MitsukoFnDefine.class);
   }
 
   @Override
   @NotNull
-  public MitsukoFnDefine getFnDefine() {
-    return findNotNullChildByClass(MitsukoFnDefine.class);
+  public MitsukoLines getLines() {
+    return findNotNullChildByClass(MitsukoLines.class);
   }
 
 }

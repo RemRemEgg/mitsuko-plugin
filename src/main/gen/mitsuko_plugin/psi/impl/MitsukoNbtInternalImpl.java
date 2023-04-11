@@ -33,10 +33,4 @@ public class MitsukoNbtInternalImpl extends ASTWrapperPsiElement implements Mits
     return findChildByClass(MitsukoNbtInternal.class);
   }
 
-  @Override
-  @NotNull
-  public List<MitsukoW> getWList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoW.class);
-  }
-
 }

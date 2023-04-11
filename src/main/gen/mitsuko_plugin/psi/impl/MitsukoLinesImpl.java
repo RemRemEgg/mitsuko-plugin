@@ -11,14 +11,14 @@ import static mitsuko_plugin.psi.MitsukoTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import mitsuko_plugin.psi.*;
 
-public class MitsukoForImpl extends ASTWrapperPsiElement implements MitsukoFor {
+public class MitsukoLinesImpl extends ASTWrapperPsiElement implements MitsukoLines {
 
-  public MitsukoForImpl(@NotNull ASTNode node) {
+  public MitsukoLinesImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MitsukoVisitor visitor) {
-    visitor.visitFor(this);
+    visitor.visitLines(this);
   }
 
   @Override
@@ -29,8 +29,8 @@ public class MitsukoForImpl extends ASTWrapperPsiElement implements MitsukoFor {
 
   @Override
   @NotNull
-  public MitsukoScoreboard getScoreboard() {
-    return findNotNullChildByClass(MitsukoScoreboard.class);
+  public List<MitsukoCode> getCodeList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoCode.class);
   }
 
 }

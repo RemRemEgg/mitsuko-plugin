@@ -11,26 +11,20 @@ import static mitsuko_plugin.psi.MitsukoTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import mitsuko_plugin.psi.*;
 
-public class MitsukoFnBodyImpl extends ASTWrapperPsiElement implements MitsukoFnBody {
+public class MitsukoPackTagImpl extends ASTWrapperPsiElement implements MitsukoPackTag {
 
-  public MitsukoFnBodyImpl(@NotNull ASTNode node) {
+  public MitsukoPackTagImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MitsukoVisitor visitor) {
-    visitor.visitFnBody(this);
+    visitor.visitPackTag(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof MitsukoVisitor) accept((MitsukoVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public List<MitsukoCode> getCodeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoCode.class);
   }
 
 }

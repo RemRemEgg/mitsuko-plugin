@@ -10,7 +10,4 @@ public interface MitsukoItemFile extends PsiElement {
   @NotNull
   List<MitsukoItemContent> getItemContentList();
 
-  @NotNull
-  List<MitsukoW> getWList();
-
 }

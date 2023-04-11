@@ -5,9 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MitsukoNbt extends PsiElement {
-
-  @NotNull
-  List<MitsukoNbtInternal> getNbtInternalList();
+public interface MitsukoPackTag extends PsiElement {
 
 }

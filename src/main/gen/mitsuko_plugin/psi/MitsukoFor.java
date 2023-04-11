@@ -10,7 +10,4 @@ public interface MitsukoFor extends PsiElement {
   @NotNull
   MitsukoScoreboard getScoreboard();
 
-  @NotNull
-  List<MitsukoW> getWList();
-
 }

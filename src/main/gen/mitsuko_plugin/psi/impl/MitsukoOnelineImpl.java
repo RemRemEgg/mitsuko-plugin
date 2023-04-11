@@ -11,14 +11,14 @@ import static mitsuko_plugin.psi.MitsukoTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import mitsuko_plugin.psi.*;
 
-public class MitsukoShortScoreImpl extends ASTWrapperPsiElement implements MitsukoShortScore {
+public class MitsukoOnelineImpl extends ASTWrapperPsiElement implements MitsukoOneline {
 
-  public MitsukoShortScoreImpl(@NotNull ASTNode node) {
+  public MitsukoOnelineImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MitsukoVisitor visitor) {
-    visitor.visitShortScore(this);
+    visitor.visitOneline(this);
   }
 
   @Override
@@ -35,8 +35,26 @@ public class MitsukoShortScoreImpl extends ASTWrapperPsiElement implements Mitsu
 
   @Override
   @NotNull
+  public List<MitsukoESelector> getESelectorList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoESelector.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MitsukoNbt> getNbtList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoNbt.class);
+  }
+
+  @Override
+  @NotNull
   public List<MitsukoScoreboard> getScoreboardList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoScoreboard.class);
+  }
+
+  @Override
+  @Nullable
+  public MitsukoShortScore getShortScore() {
+    return findChildByClass(MitsukoShortScore.class);
   }
 
 }

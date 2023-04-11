@@ -5,9 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MitsukoNbt extends PsiElement {
+public interface MitsukoMultiline extends PsiElement {
 
-  @NotNull
-  List<MitsukoNbtInternal> getNbtInternalList();
+  @Nullable
+  MitsukoCode getCode();
+
+  @Nullable
+  MitsukoFlow getFlow();
+
+  @Nullable
+  MitsukoFor getFor();
 
 }

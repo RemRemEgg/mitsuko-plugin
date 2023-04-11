@@ -68,7 +68,7 @@ import java.util.ArrayList;
         yybegin(nbt_return);
         nbt_stack.clear();
         nbt_string = 'x';
-        return WHITE1;
+        return CRLF;
     }
     
     public void SELECTOR(int next) {
@@ -173,33 +173,34 @@ FLOW_CONTROL_SUBS_SUBS = ("storage" | "all" | "masked" | "matches" | (">" | ">="
 %%
 // TODO ######################################################################################################
 
-^{BOL_COMMENT}                                               { if (yystate() == YYINITIAL) {yydesselect(); yybegin(FUNCTION_FILE); return HEADER_FN_FILE; } return COMMENT; }
+^{BOL_COMMENT}                                               { if (yystate() == YYINITIAL) {yydesselect(); yybegin(FUNCTION_FILE); return HEADER_FN_FILE; } else {return COMMENT;} }
 <YYINITIAL> (recipe|materials|item){Wr}"{"                   { yydesselect(); yybegin(ITEM_FILE); is_item = true; return HEADER_ITEM_FILE; }
 <YYINITIAL> "fn "                                            { yydesselect(); yybegin(FUNCTION_FILE); return HEADER_FN_FILE; }
 <YYINITIAL> "#["                                             { yydesselect(); yybegin(FUNCTION_FILE); return HEADER_FN_FILE; }
 <YYINITIAL> {FN_NAME}/{Wr}:                                  { yydesselect(); yybegin(LINK_FILE); return HEADER_PACK_FILE; }
 <YYINITIAL> {WORD_SYM_NO_NBTS}/{Wr}=                         { yydesselect(); yybegin(PACK_FILE); return HEADER_PACK_FILE; }
+<YYINITIAL> (de|ve|na|re|co|op)[a-z]{W}*/[^:\{]              { yydesselect(); yybegin(PACK_FILE); return HEADER_PACK_FILE; }
 
-<FUNCTION_FILE> {CRLF}                                       { return WHITE1; }
-<FUNCTION_FILE> {WHITE_SPACE}                                { return WHITE1; }
+<FUNCTION_FILE> {CRLF}                                       { return CRLF; }
+<FUNCTION_FILE> {WHITE_SPACE}                                { return WHITE_SPACE; }
 
 <FUNCTION_FILE> ^{W}"#["{W}                                  { yybegin(wTAG_NAME); return TAG_DEF; }
 <wTAG_NAME> {WORD}{W}                                        { yybegin(wTAG_EQUALS); return TAG_NAME;}
-<wTAG_EQUALS> {EQUALS}{W}                                    { yybegin(wTAG_VALUE); return EQUALS;}
+<wTAG_EQUALS> {EQUALS}{W}                                    { yybegin(wTAG_VALUE); return EQUALS;}    
 <wTAG_VALUE> {WORDS_SYM_NO_BRACKETS}{W}                      { yybegin(wTAG_END); return TAG_VALUE;}
 <wTAG_END> ("]"{W})$                                         { yybegin(FUNCTION_FILE); return TAG_DEF;}
       
 <FUNCTION_FILE> ^{W}"fn"                                     { yybegin(wFN_NAME); return FN_KEYWORD;}
-<wFN_NAME> {Wr}{FN_NAME}"()"                                 { yybegin(wFN_BEGIN); return FN_NAME;}
-<wFN_BEGIN> {Wr}"{"{W}{CRLF}                                 { yybegin(FN_INSIDE); curl_depth++; return FN_OPEN;}
-<wFN_BEGIN> {Wr}"{"{W}/\}                                    { yybegin(FN_INSIDE); curl_depth++; return FN_OPEN;}
+<wFN_NAME> {Wr}{FN_NAME}"()"{Wr}                             { yybegin(wFN_BEGIN); return FN_NAME;}
+<wFN_BEGIN> "{"/{W}{CRLF}                                    { yybegin(FN_INSIDE); curl_depth++; return FN_OPEN;}
+<wFN_BEGIN> "{"{W}/\}                                        { yybegin(FN_INSIDE); curl_depth++; return FN_OPEN;}
 
 <FN_INSIDE> {
     {COMMANDS}                                               { yybegin(COMMAND); return COMMAND_START; }
     "cmd"                                                    { return COMMAND_START; }
     {SHORTHANDS}                                             { yybegin(COMMAND); return CODE_CUSTOM; }
     {EXECUTES}                                               { yybegin(EXECUTE); return COMMAND_START; }
-    {CRLF}                                                   { return WHITE1; }
+    {CRLF}                                                   { return CRLF; }
     "{"                                                      { curl_depth++; return BLOCK_OPEN;}
     "}"                                                      { return fn_close_brace(); }
     {FUNCTION_CALL}                                          { return FN_CALL; }
@@ -213,8 +214,8 @@ FLOW_CONTROL_SUBS_SUBS = ("storage" | "all" | "masked" | "matches" | (">" | ">="
     for                                                      { yybegin(wFOR); return CODE_CUSTOM; }
     "$JSON{"                                                 { yybegin(wJSON_MODS); return SUB_CUSTOM; }
     \$\{{WORD_SYM_NO_NBTS}\}                                 { return VALUE; }
-    {Wr}                                                     { return WHITE1; }
-    [^]                                                      { yybegin(COMMAND); return SUB_UNKNOWN; }
+    {Wr}                                                     { return WHITE_SPACE; }
+    [a-zA-Z0-9]+                                             { yybegin(COMMAND); return SUB_UNKNOWN; }
 }
 
 <COMMAND> {
@@ -225,7 +226,7 @@ FLOW_CONTROL_SUBS_SUBS = ("storage" | "all" | "masked" | "matches" | (">" | ">="
     {PIDENT}                                                 { return PIDENT; }
     {SUBS}                                                   { return SUB_1; }
     {WORD_SYM_NO_NBTS}                                       { return SUB_UNKNOWN; }
-    {WHITE_SPACE}                                            { return WHITE1; }
+    {WHITE_SPACE}                                            { return WHITE_SPACE; }
     {CRLF}                                                   { yybegin(FN_INSIDE); return CRLF; }
     "$JSON{"                                                 { yybegin(wJSON_MODS); return SUB_CUSTOM; }
     \$\{{WORD_SYM_NO_NBTS}\}                                 { return VALUE; }
@@ -240,7 +241,7 @@ FLOW_CONTROL_SUBS_SUBS = ("storage" | "all" | "masked" | "matches" | (">" | ">="
     {Wr}{EXECUTE_SUBS_SUBS}                                  { return SUB_2; }
     {PIDENT}                                                 { return PIDENT; }
     {Wr}"run"                                                { yybegin(FN_INSIDE); return EXE_SUB; }
-    {WHITE_SPACE}                                            { return WHITE1; }
+    {WHITE_SPACE}                                            { return WHITE_SPACE; }
     {CRLF}                                                   { yybegin(FN_INSIDE); return CRLF; }
     [^]                                                      { return SUB_UNKNOWN; }
 }
@@ -267,7 +268,7 @@ FLOW_CONTROL_SUBS_SUBS = ("storage" | "all" | "masked" | "matches" | (">" | ">="
 <SCOREBOARD> {
     ":"                                                      { return EQUALS; }
     "r"?"&"?{FN_WORDS}+                                      { yybegin(SCOREBOARD_OP); return SCORE_NAME; }
-    {Wr}                                                     { return WHITE1; }
+    {Wr}                                                     { return WHITE_SPACE; }
     {CRLF}                                                   { yybegin(FN_INSIDE); return BAD_CHARACTER; }
 }
 
@@ -294,8 +295,8 @@ FLOW_CONTROL_SUBS_SUBS = ("storage" | "all" | "masked" | "matches" | (">" | ">="
 }
 
 <wEOC> {
-    ^{WHITE_SPACE}                                           { yybegin(FN_INSIDE); return WHITE1; }
-    {WHITE_SPACE}                                            { return WHITE1; }
+    ^{WHITE_SPACE}                                           { yybegin(FN_INSIDE); return WHITE_SPACE; }
+    {WHITE_SPACE}                                            { return WHITE_SPACE; }
     {CRLF}                                                   { yybegin(FN_INSIDE); return CRLF; }
 }
 
@@ -321,32 +322,32 @@ FLOW_CONTROL_SUBS_SUBS = ("storage" | "all" | "masked" | "matches" | (">" | ">="
 <FLOW_SCOREBOARD> {
     ":"                                                      { return EQUALS; }
     "r"?"&"?{FN_WORDS}+                                      { yybegin(FLOW); return SCORE_NAME; }
-    {Wr}                                                     { yybegin(FLOW); return WHITE1; }
+    {Wr}                                                     { yybegin(FLOW); return WHITE_SPACE; }
     ")"                                                      { yybegin(FN_INSIDE); return PARENS; }
 }
 
 <wLOOP> {
     {PIDENT}                                                 { yybegin(FN_INSIDE); return PIDENT; }
-    {Wr}                                                     { return WHITE1; }
+    {Wr}                                                     { return WHITE_SPACE; }
 }
 
 <wSCORE_NAME> {
-    [^\ \t]+/{Wr}"{"                                         { yybegin(COMMAND); return SUB_CUSTOM; }
-    [^\ \t]+                                                 { yybegin(FN_INSIDE); return SUB_CUSTOM; }
-    {Wr}                                                     { return WHITE1; }
+    [A-Za-z_0-9!@#$%&*(){}:.\ ]+/{CRLF}                      { yybegin(FN_INSIDE); return SUB_CUSTOM; }
+    {Wr}                                                     { return WHITE_SPACE; }
+    {CRLF}                                                   { yybegin(FN_INSIDE); return CRLF; }
 }
 
 <wJSON_MODS> {
     [^\ :]                                                   { return SUB_1; }
     :                                                        { yybegin(wJSON_TEXT); return EQUALS; }
-    {Wr}                                                     { return WHITE1; }
+    {Wr}                                                     { return WHITE_SPACE; }
 }
 
 <wJSON_TEXT> {
     [^\ }]                                                   { return NBT_STRING; }
     \}                                                       { yybegin(COMMAND); return SUB_CUSTOM; }
     \$\{{WORD_SYM_NO_NBTS}\}                                 { return VALUE; }
-    {Wr}                                                     { return WHITE1; }
+    {Wr}                                                     { return WHITE_SPACE; }
 }
 
 <wFOR> {
@@ -374,14 +375,14 @@ FLOW_CONTROL_SUBS_SUBS = ("storage" | "all" | "masked" | "matches" | (">" | ">="
 
 // TODO ######################################################################################################
 
-<PACK_FILE> {CRLF}                                           { return WHITE1; }
+<PACK_FILE> {CRLF}                                           { return CRLF; }
 <PACK_FILE> {WORD_SYM_NO_NBTS}                               { yybegin(wEQUALS); return TAG_NAME; }
 <wEQUALS> =                                                  { yybegin(wVALUE); return EQUALS; }
 <wVALUE> [^\n\r]+                                            { yybegin(PACK_FILE); return TAG_VALUE; }
 
 // TODO ######################################################################################################
 
-<LINK_FILE> {CRLF}                                           { return WHITE1; }
+<LINK_FILE> {CRLF}                                           { return CRLF; }
 <LINK_FILE> {FN_NAME}                                        { yybegin(wCOLON); return TAG_NAME; }
 <wCOLON> :                                                   { yybegin(wFUNCTIONS); return EQUALS; }
 <wFUNCTIONS> [^\n\r]+                                        { yybegin(is_item ? nbt_return : LINK_FILE); return TAG_VALUE; }
@@ -389,27 +390,26 @@ FLOW_CONTROL_SUBS_SUBS = ("storage" | "all" | "masked" | "matches" | (">" | ">="
 // TODO ######################################################################################################
 
 <ITEM_FILE> {
-    recipe                                                   { yybegin(wRECIPE); return ITEM_GROUP; }
-    materials                                                { yybegin(wMATERIALS); return ITEM_GROUP; }
-    path                                                     { nbt_return = ITEM_FILE; yybegin(wCOLON); return ITEM_GROUP; }
-    item                                                     { curl_depth = 1; yybegin(FN_INSIDE); return ITEM_GROUP; }
-    {CRLF}                                                   { return WHITE1; }
-    [^]                                                      { return COMMENT; }
+    recipe/{Wr}\{                                            { yybegin(wRECIPE); return ITEM_GROUP; }
+    materials/{Wr}\{                                         { yybegin(wMATERIALS); return ITEM_GROUP; }
+    path/{Wr}\:                                              { nbt_return = ITEM_FILE; yybegin(wCOLON); return ITEM_GROUP; }
+    item/{Wr}\{                                              { curl_depth = 1; yybegin(FN_INSIDE); return ITEM_GROUP; }
+    {CRLF}                                                   { return CRLF; }
 }
 
 <wRECIPE> {
     \{                                                       { return BLOCK_OPEN; }
     "\""~"\""                                                { return NBT_STRING; }
     \}                                                       { yybegin(ITEM_FILE); return BLOCK_CLOSE; }
-    {CRLF}                                                   { return WHITE1; }
+    {CRLF}                                                   { return CRLF; }
 }
 
 <wMATERIALS> {
     \{                                                       { return BLOCK_OPEN; }
     [A-Za-z_0-9!@#$%\^&*]                                    { nbt_return = wMATERIALS; yybegin(wCOLON); return TAG_NAME; }
     \}                                                       { yybegin(ITEM_FILE); return BLOCK_CLOSE; }
-    {CRLF}                                                   { return WHITE1; }
+    {CRLF}                                                   { return CRLF; }
 }
 
-{Wr}                                                         { return WHITE1; }
+{Wr}                                                         { return WHITE_SPACE; }
 [^]                                                          { return BAD_CHARACTER; }

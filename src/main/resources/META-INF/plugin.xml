@@ -29,6 +29,12 @@
         <completion.contributor
                 language="Mitsuko"
                 implementationClass="mitsuko_plugin.MitsukoCompletionContributor"/>
+        <lang.foldingBuilder
+                language="Mitsuko"
+                implementationClass="mitsuko_plugin.MitsukoFoldingBuilder"/>
+        <lang.formatter
+                language="Mitsuko"
+                implementationClass="mitsuko_plugin.MitsukoFormattingModelBuilder"/>
     </extensions>
 
     <actions>

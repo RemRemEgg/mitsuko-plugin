@@ -27,10 +27,6 @@ public class MitsukoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitFnBody(@NotNull MitsukoFnBody o) {
-    visitPsiElement(o);
-  }
-
   public void visitFnDefine(@NotNull MitsukoFnDefine o) {
     visitPsiElement(o);
   }
@@ -55,6 +51,14 @@ public class MitsukoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitLines(@NotNull MitsukoLines o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMultiline(@NotNull MitsukoMultiline o) {
+    visitPsiElement(o);
+  }
+
   public void visitNbt(@NotNull MitsukoNbt o) {
     visitPsiElement(o);
   }
@@ -63,7 +67,15 @@ public class MitsukoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitOneline(@NotNull MitsukoOneline o) {
+    visitPsiElement(o);
+  }
+
   public void visitPackFile(@NotNull MitsukoPackFile o) {
+    visitPsiElement(o);
+  }
+
+  public void visitPackTag(@NotNull MitsukoPackTag o) {
     visitPsiElement(o);
   }
 
@@ -76,10 +88,6 @@ public class MitsukoVisitor extends PsiElementVisitor {
   }
 
   public void visitTag(@NotNull MitsukoTag o) {
-    visitPsiElement(o);
-  }
-
-  public void visitW(@NotNull MitsukoW o) {
     visitPsiElement(o);
   }
 

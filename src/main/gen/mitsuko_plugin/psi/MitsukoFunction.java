@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface MitsukoFunction extends PsiElement {
 
   @NotNull
-  MitsukoFnBody getFnBody();
+  MitsukoFnDefine getFnDefine();
 
   @NotNull
-  MitsukoFnDefine getFnDefine();
+  MitsukoLines getLines();
 
 }

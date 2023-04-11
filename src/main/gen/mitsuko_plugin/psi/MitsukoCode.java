@@ -11,24 +11,9 @@ public interface MitsukoCode extends PsiElement {
   MitsukoBlock getBlock();
 
   @Nullable
-  MitsukoCode getCode();
-
-  @NotNull
-  List<MitsukoESelector> getESelectorList();
+  MitsukoMultiline getMultiline();
 
   @Nullable
-  MitsukoFlow getFlow();
-
-  @Nullable
-  MitsukoFor getFor();
-
-  @NotNull
-  List<MitsukoNbt> getNbtList();
-
-  @NotNull
-  List<MitsukoScoreboard> getScoreboardList();
-
-  @Nullable
-  MitsukoShortScore getShortScore();
+  MitsukoOneline getOneline();
 
 }

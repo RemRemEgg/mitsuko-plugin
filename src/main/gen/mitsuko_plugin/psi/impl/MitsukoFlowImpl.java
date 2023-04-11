@@ -33,10 +33,4 @@ public class MitsukoFlowImpl extends ASTWrapperPsiElement implements MitsukoFlow
     return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoCondition.class);
   }
 
-  @Override
-  @NotNull
-  public List<MitsukoW> getWList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoW.class);
-  }
-
 }

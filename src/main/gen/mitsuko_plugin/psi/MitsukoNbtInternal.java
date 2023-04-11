@@ -10,7 +10,4 @@ public interface MitsukoNbtInternal extends PsiElement {
   @Nullable
   MitsukoNbtInternal getNbtInternal();
 
-  @NotNull
-  List<MitsukoW> getWList();
-
 }

@@ -29,8 +29,8 @@ public class MitsukoBlockImpl extends ASTWrapperPsiElement implements MitsukoBlo
 
   @Override
   @NotNull
-  public List<MitsukoCode> getCodeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoCode.class);
+  public MitsukoLines getLines() {
+    return findNotNullChildByClass(MitsukoLines.class);
   }
 
 }

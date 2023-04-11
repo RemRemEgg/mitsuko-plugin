@@ -5,12 +5,27 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MitsukoShortScore extends PsiElement {
+public interface MitsukoCodeLine extends PsiElement {
 
   @Nullable
   MitsukoCode getCode();
 
   @NotNull
+  List<MitsukoESelector> getESelectorList();
+
+  @Nullable
+  MitsukoFlow getFlow();
+
+  @Nullable
+  MitsukoFor getFor();
+
+  @NotNull
+  List<MitsukoNbt> getNbtList();
+
+  @NotNull
   List<MitsukoScoreboard> getScoreboardList();
+
+  @Nullable
+  MitsukoShortScore getShortScore();
 
 }

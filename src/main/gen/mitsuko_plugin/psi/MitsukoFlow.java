@@ -10,7 +10,4 @@ public interface MitsukoFlow extends PsiElement {
   @NotNull
   List<MitsukoCondition> getConditionList();
 
-  @NotNull
-  List<MitsukoW> getWList();
-
 }

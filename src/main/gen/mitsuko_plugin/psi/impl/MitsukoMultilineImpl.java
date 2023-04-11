@@ -11,20 +11,38 @@ import static mitsuko_plugin.psi.MitsukoTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import mitsuko_plugin.psi.*;
 
-public class MitsukoWImpl extends ASTWrapperPsiElement implements MitsukoW {
+public class MitsukoMultilineImpl extends ASTWrapperPsiElement implements MitsukoMultiline {
 
-  public MitsukoWImpl(@NotNull ASTNode node) {
+  public MitsukoMultilineImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MitsukoVisitor visitor) {
-    visitor.visitW(this);
+    visitor.visitMultiline(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof MitsukoVisitor) accept((MitsukoVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @Nullable
+  public MitsukoCode getCode() {
+    return findChildByClass(MitsukoCode.class);
+  }
+
+  @Override
+  @Nullable
+  public MitsukoFlow getFlow() {
+    return findChildByClass(MitsukoFlow.class);
+  }
+
+  @Override
+  @Nullable
+  public MitsukoFor getFor() {
+    return findChildByClass(MitsukoFor.class);
   }
 
 }

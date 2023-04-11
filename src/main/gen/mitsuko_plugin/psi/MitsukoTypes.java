@@ -13,20 +13,22 @@ public interface MitsukoTypes {
   IElementType CONDITION = new MitsukoElementType("CONDITION");
   IElementType E_SELECTOR = new MitsukoElementType("E_SELECTOR");
   IElementType FLOW = new MitsukoElementType("FLOW");
-  IElementType FN_BODY = new MitsukoElementType("FN_BODY");
   IElementType FN_DEFINE = new MitsukoElementType("FN_DEFINE");
   IElementType FOR = new MitsukoElementType("FOR");
   IElementType FUNCTION = new MitsukoElementType("FUNCTION");
   IElementType FUNCTION_FILE = new MitsukoElementType("FUNCTION_FILE");
   IElementType ITEM_CONTENT = new MitsukoElementType("ITEM_CONTENT");
   IElementType ITEM_FILE = new MitsukoElementType("ITEM_FILE");
+  IElementType LINES = new MitsukoElementType("LINES");
+  IElementType MULTILINE = new MitsukoElementType("MULTILINE");
   IElementType NBT = new MitsukoElementType("NBT");
   IElementType NBT_INTERNAL = new MitsukoElementType("NBT_INTERNAL");
+  IElementType ONELINE = new MitsukoElementType("ONELINE");
   IElementType PACK_FILE = new MitsukoElementType("PACK_FILE");
+  IElementType PACK_TAG = new MitsukoElementType("PACK_TAG");
   IElementType SCOREBOARD = new MitsukoElementType("SCOREBOARD");
   IElementType SHORT_SCORE = new MitsukoElementType("SHORT_SCORE");
   IElementType TAG = new MitsukoElementType("TAG");
-  IElementType W = new MitsukoElementType("W");
 
   IElementType BLOCK_CLOSE = new MitsukoTokenType("BLOCK_CLOSE");
   IElementType BLOCK_OPEN = new MitsukoTokenType("BLOCK_OPEN");
@@ -65,7 +67,6 @@ public interface MitsukoTypes {
   IElementType TAG_NAME = new MitsukoTokenType("TAG_NAME");
   IElementType TAG_VALUE = new MitsukoTokenType("TAG_VALUE");
   IElementType VALUE = new MitsukoTokenType("VALUE");
-  IElementType WHITE1 = new MitsukoTokenType("WHITE1");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
@@ -85,9 +86,6 @@ public interface MitsukoTypes {
       else if (type == FLOW) {
         return new MitsukoFlowImpl(node);
       }
-      else if (type == FN_BODY) {
-        return new MitsukoFnBodyImpl(node);
-      }
       else if (type == FN_DEFINE) {
         return new MitsukoFnDefineImpl(node);
       }
@@ -106,14 +104,26 @@ public interface MitsukoTypes {
       else if (type == ITEM_FILE) {
         return new MitsukoItemFileImpl(node);
       }
+      else if (type == LINES) {
+        return new MitsukoLinesImpl(node);
+      }
+      else if (type == MULTILINE) {
+        return new MitsukoMultilineImpl(node);
+      }
       else if (type == NBT) {
         return new MitsukoNbtImpl(node);
       }
       else if (type == NBT_INTERNAL) {
         return new MitsukoNbtInternalImpl(node);
       }
+      else if (type == ONELINE) {
+        return new MitsukoOnelineImpl(node);
+      }
       else if (type == PACK_FILE) {
         return new MitsukoPackFileImpl(node);
+      }
+      else if (type == PACK_TAG) {
+        return new MitsukoPackTagImpl(node);
       }
       else if (type == SCOREBOARD) {
         return new MitsukoScoreboardImpl(node);
@@ -123,9 +133,6 @@ public interface MitsukoTypes {
       }
       else if (type == TAG) {
         return new MitsukoTagImpl(node);
-      }
-      else if (type == W) {
-        return new MitsukoWImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

@@ -33,10 +33,4 @@ public class MitsukoItemFileImpl extends ASTWrapperPsiElement implements Mitsuko
     return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoItemContent.class);
   }
 
-  @Override
-  @NotNull
-  public List<MitsukoW> getWList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoW.class);
-  }
-
 }

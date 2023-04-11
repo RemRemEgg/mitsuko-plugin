@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface MitsukoPackFile extends PsiElement {
 
   @NotNull
-  List<MitsukoW> getWList();
+  List<MitsukoPackTag> getPackTagList();
 
 }
