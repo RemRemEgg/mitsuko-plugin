@@ -13,6 +13,7 @@ import com.intellij.psi.PsiLiteralExpression;
 import com.intellij.psi.util.PsiTreeUtil;
 import mitsuko_plugin.psi.MitsukoBlock;
 import mitsuko_plugin.psi.MitsukoFnBody;
+import mitsuko_plugin.psi.MitsukoLines;
 import mitsuko_plugin.psi.MitsukoNbt;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,9 +28,9 @@ public class MitsukoFoldingBuilder extends FoldingBuilderEx implements DumbAware
     public FoldingDescriptor @NotNull [] buildFoldRegions(@NotNull PsiElement root, @NotNull Document document, boolean quick) {
         List<FoldingDescriptor> descriptors = new ArrayList<>();
 
-        Collection<MitsukoBlock> blocks =
-                PsiTreeUtil.findChildrenOfType(root, MitsukoBlock.class);
-        for (final MitsukoBlock block : blocks) {
+        Collection<MitsukoLines> blocks =
+                PsiTreeUtil.findChildrenOfType(root, MitsukoLines.class);
+        for (final MitsukoLines block : blocks) {
             descriptors.add(new FoldingDescriptor(block.getNode(),
                     new TextRange(block.getTextRange().getStartOffset(),
                             block.getTextRange().getEndOffset())));
@@ -55,7 +56,7 @@ public class MitsukoFoldingBuilder extends FoldingBuilderEx implements DumbAware
     @Nullable
     @Override
     public String getPlaceholderText(@NotNull ASTNode node) {
-        return node.getText().trim().startsWith("{") ? "{...}" : "[...]";
+        return node.getText().trim().startsWith("{") ? "{...}" : node.getText().trim().startsWith("[") ? "[...]" : "...";
     }
 
     @Override
