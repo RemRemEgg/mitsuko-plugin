@@ -6,3 +6,5 @@
 * Autocomplete for functions, items, and pack.msk
 
 [Mitsuko](https://github.com/RemRemEgg/mitsuko "Mitsuko on GitHub")
+
+<iframe width="245px" height="48px" src="https://plugins.jetbrains.com/embeddable/install/21514"></iframe>
