@@ -5,6 +5,5 @@
 * Syntax highlighting for functions, event links, items, and pack.msk
 * Autocomplete for functions, items, and pack.msk
 
-[Mitsuko](https://github.com/RemRemEgg/mitsuko "Mitsuko on GitHub")
-
-<iframe width="245px" height="48px" src="https://plugins.jetbrains.com/embeddable/install/21514"></iframe>
+[Mitsuko Compiler](https://github.com/RemRemEgg/mitsuko "Mitsuko on GitHub")
+[Intellij Plugin Install](https://plugins.jetbrains.com/plugin/21514-mitsuko "Mitsuko on Intellij")
