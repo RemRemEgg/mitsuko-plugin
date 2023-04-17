@@ -29,8 +29,8 @@ public class MitsukoShortScoreImpl extends ASTWrapperPsiElement implements Mitsu
 
   @Override
   @Nullable
-  public MitsukoCode getCode() {
-    return findChildByClass(MitsukoCode.class);
+  public MitsukoOneline getOneline() {
+    return findChildByClass(MitsukoOneline.class);
   }
 
   @Override

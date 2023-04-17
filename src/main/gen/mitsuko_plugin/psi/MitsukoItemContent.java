@@ -8,6 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface MitsukoItemContent extends PsiElement {
 
   @NotNull
-  List<MitsukoCode> getCodeList();
+  List<MitsukoLines> getLinesList();
+
+  @NotNull
+  List<MitsukoMultiline> getMultilineList();
+
+  @NotNull
+  List<MitsukoOneline> getOnelineList();
 
 }

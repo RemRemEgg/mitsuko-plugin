@@ -8,8 +8,6 @@ import mitsuko_plugin.psi.impl.*;
 
 public interface MitsukoTypes {
 
-  IElementType BLOCK = new MitsukoElementType("BLOCK");
-  IElementType CODE = new MitsukoElementType("CODE");
   IElementType CONDITION = new MitsukoElementType("CONDITION");
   IElementType E_SELECTOR = new MitsukoElementType("E_SELECTOR");
   IElementType FLOW = new MitsukoElementType("FLOW");
@@ -35,7 +33,6 @@ public interface MitsukoTypes {
   IElementType CODE_CUSTOM = new MitsukoTokenType("CODE_CUSTOM");
   IElementType COMMA = new MitsukoTokenType("COMMA");
   IElementType COMMAND_START = new MitsukoTokenType("COMMAND_START");
-  IElementType COMMENT = new MitsukoTokenType("COMMENT");
   IElementType CRLF = new MitsukoTokenType("CRLF");
   IElementType EQUALS = new MitsukoTokenType("EQUALS");
   IElementType EXE_SUB = new MitsukoTokenType("EXE_SUB");
@@ -49,6 +46,7 @@ public interface MitsukoTypes {
   IElementType HEADER_ITEM_FILE = new MitsukoTokenType("HEADER_ITEM_FILE");
   IElementType HEADER_PACK_FILE = new MitsukoTokenType("HEADER_PACK_FILE");
   IElementType ITEM_GROUP = new MitsukoTokenType("ITEM_GROUP");
+  IElementType MSK_COMMENT = new MitsukoTokenType("MSK_COMMENT");
   IElementType NBT_BRACES = new MitsukoTokenType("NBT_BRACES");
   IElementType NBT_PROPERTY = new MitsukoTokenType("NBT_PROPERTY");
   IElementType NBT_STRING = new MitsukoTokenType("NBT_STRING");
@@ -71,13 +69,7 @@ public interface MitsukoTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == BLOCK) {
-        return new MitsukoBlockImpl(node);
-      }
-      else if (type == CODE) {
-        return new MitsukoCodeImpl(node);
-      }
-      else if (type == CONDITION) {
+      if (type == CONDITION) {
         return new MitsukoConditionImpl(node);
       }
       else if (type == E_SELECTOR) {

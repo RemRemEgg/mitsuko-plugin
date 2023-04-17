@@ -9,7 +9,6 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.ui.JBColor;
-import com.siyeh.ig.fixes.EqualityToSafeEqualsFix;
 import mitsuko_plugin.psi.MitsukoTypes;
 import org.jetbrains.annotations.NotNull;
 
@@ -128,7 +127,7 @@ public class MitsukoSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @Override
     public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
-        if (tokenType.equals(MitsukoTypes.COMMENT)) {
+        if (tokenType.equals(MitsukoTypes.MSK_COMMENT)) {
             return COMMENT_KEYS;
         }
         if (tokenType.equals(TokenType.BAD_CHARACTER)) {

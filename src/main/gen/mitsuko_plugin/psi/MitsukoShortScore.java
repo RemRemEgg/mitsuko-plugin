@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface MitsukoShortScore extends PsiElement {
 
   @Nullable
-  MitsukoCode getCode();
+  MitsukoOneline getOneline();
 
   @NotNull
   List<MitsukoScoreboard> getScoreboardList();

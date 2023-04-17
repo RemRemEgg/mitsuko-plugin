@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface MitsukoCode extends PsiElement {
 
   @Nullable
-  MitsukoBlock getBlock();
+  MitsukoLines getLines();
 
   @Nullable
   MitsukoMultiline getMultiline();

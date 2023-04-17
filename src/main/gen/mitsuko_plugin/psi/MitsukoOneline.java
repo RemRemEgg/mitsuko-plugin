@@ -7,9 +7,6 @@ import com.intellij.psi.PsiElement;
 
 public interface MitsukoOneline extends PsiElement {
 
-  @Nullable
-  MitsukoCode getCode();
-
   @NotNull
   List<MitsukoESelector> getESelectorList();
 

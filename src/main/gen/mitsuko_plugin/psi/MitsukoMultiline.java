@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface MitsukoMultiline extends PsiElement {
 
   @Nullable
-  MitsukoCode getCode();
-
-  @Nullable
   MitsukoFlow getFlow();
 
   @Nullable

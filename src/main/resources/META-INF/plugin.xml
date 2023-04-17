@@ -4,7 +4,7 @@
     <vendor email="remremegg@gmail.com">RemRemEgg</vendor>
 
     <description><![CDATA[Code Highlighting and Completion for Mitsuko
-    <a href="https://github.com/RemRemEgg/mitsuko">Github</a>]]></description>
+    <br><a href="https://github.com/RemRemEgg/mitsuko">Mitsuko on Github</a>]]></description>
 
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
          on how to target different products -->
@@ -35,6 +35,9 @@
         <lang.formatter
                 language="Mitsuko"
                 implementationClass="mitsuko_plugin.MitsukoFormattingModelBuilder"/>
+        <lang.commenter
+                language="Mitsuko"
+                implementationClass="mitsuko_plugin.MitsukoCommenter"/>
     </extensions>
 
     <actions>

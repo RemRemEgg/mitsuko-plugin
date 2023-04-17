@@ -7,14 +7,6 @@ import com.intellij.psi.PsiElement;
 
 public class MitsukoVisitor extends PsiElementVisitor {
 
-  public void visitBlock(@NotNull MitsukoBlock o) {
-    visitPsiElement(o);
-  }
-
-  public void visitCode(@NotNull MitsukoCode o) {
-    visitPsiElement(o);
-  }
-
   public void visitCondition(@NotNull MitsukoCondition o) {
     visitPsiElement(o);
   }

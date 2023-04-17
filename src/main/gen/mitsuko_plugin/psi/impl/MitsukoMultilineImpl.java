@@ -29,12 +29,6 @@ public class MitsukoMultilineImpl extends ASTWrapperPsiElement implements Mitsuk
 
   @Override
   @Nullable
-  public MitsukoCode getCode() {
-    return findChildByClass(MitsukoCode.class);
-  }
-
-  @Override
-  @Nullable
   public MitsukoFlow getFlow() {
     return findChildByClass(MitsukoFlow.class);
   }

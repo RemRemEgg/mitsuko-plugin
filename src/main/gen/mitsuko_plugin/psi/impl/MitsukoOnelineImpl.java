@@ -28,12 +28,6 @@ public class MitsukoOnelineImpl extends ASTWrapperPsiElement implements MitsukoO
   }
 
   @Override
-  @Nullable
-  public MitsukoCode getCode() {
-    return findChildByClass(MitsukoCode.class);
-  }
-
-  @Override
   @NotNull
   public List<MitsukoESelector> getESelectorList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoESelector.class);

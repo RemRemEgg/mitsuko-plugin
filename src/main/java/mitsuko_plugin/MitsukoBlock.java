@@ -16,6 +16,7 @@ public class MitsukoBlock extends AbstractBlock {
     private final SpacingBuilder spacingBuilder;
     private Boolean branch;
     private Boolean indenter;
+    private Boolean no_indent;
 
     protected MitsukoBlock(@NotNull ASTNode node, @Nullable Wrap wrap, @Nullable Alignment alignment,
                            SpacingBuilder spacingBuilder) {
@@ -23,17 +24,31 @@ public class MitsukoBlock extends AbstractBlock {
         this.spacingBuilder = spacingBuilder;
         IElementType thistype = node.getElementType();
         this.indenter = false;
+        this.no_indent = false;
         this.branch = node.getFirstChildNode() != null;
         if (this.branch) {
             switch (thistype.toString()) {
-                case "CODE":
+                case "LINES":
+                case "Mitsuko.LINES":
+                case "ITEM_CONTENT":
                     this.indenter = true;
                 case "Mitsuko.FN_OPEN":
                 case "Mitsuko.FN_CLOSE":
                     this.branch = false;
                     break;
+                case "Mitsuko.FN_KEYWORD":
+                case "FN_DEFINE":
+                case "Mitsuko.TAG_DEF":
+                case "TAG":
+                case "PACK_TAG":
+                case "Mitsuko.MSK_COMMENT":
+                    this.indenter = false;
+                    this.no_indent = true;
+                    break;
             }
         }
+        if (thistype.toString().equals("Mitsuko.MSK_COMMENT"))
+            this.no_indent = true;
     }
 
     @Override
@@ -53,7 +68,8 @@ public class MitsukoBlock extends AbstractBlock {
 
     @Override
     public Indent getIndent() {
-        return this.indenter ? Indent.getIndent(Indent.Type.NORMAL, false, false) : Indent.getNoneIndent();
+        return this.indenter ? Indent.getIndent(Indent.Type.NORMAL, false, false) :
+                this.no_indent ? Indent.getAbsoluteNoneIndent() : Indent.getNoneIndent();
     }
 
     @Override
