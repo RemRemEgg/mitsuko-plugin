@@ -1,6 +1,6 @@
 # Mitusko-Intellij Plugin
 ***
-### Version 1.0 for Mitsuko 1.0
+### Version 1.4.2 for Mitsuko 0.2
 ## Features
 * Syntax highlighting for functions, event links, items, and pack.msk
 * Autocomplete for functions, items, and pack.msk
