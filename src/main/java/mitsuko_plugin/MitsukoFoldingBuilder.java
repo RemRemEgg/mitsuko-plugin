@@ -31,23 +31,35 @@ public class MitsukoFoldingBuilder extends FoldingBuilderEx implements DumbAware
         Collection<MitsukoLines> blocks =
                 PsiTreeUtil.findChildrenOfType(root, MitsukoLines.class);
         for (final MitsukoLines block : blocks) {
-            descriptors.add(new FoldingDescriptor(block.getNode(),
-                    new TextRange(block.getTextRange().getStartOffset(),
-                            block.getTextRange().getEndOffset())));
+            if (block.getTextRange().getLength() > 0) {
+                descriptors.add(new FoldingDescriptor(block.getNode(),
+                        new TextRange(block.getTextRange().getStartOffset(),
+                                block.getTextRange().getEndOffset())));
+            }
         }
         Collection<MitsukoFnBody> fns =
                 PsiTreeUtil.findChildrenOfType(root, MitsukoFnBody.class);
         for (final MitsukoFnBody block : fns) {
-            descriptors.add(new FoldingDescriptor(block.getNode(),
-                    new TextRange(block.getTextRange().getStartOffset() + 1,
-                            block.getTextRange().getEndOffset())));
+            if (block.getTextRange().getLength() > 0) {
+                descriptors.add(new FoldingDescriptor(block.getNode(),
+                        new TextRange(block.getTextRange().getStartOffset() + 1,
+                                block.getTextRange().getEndOffset())));
+            }
         }
         Collection<MitsukoNbt> nbts =
                 PsiTreeUtil.findChildrenOfType(root, MitsukoNbt.class);
         for (final MitsukoNbt block : nbts) {
-            descriptors.add(new FoldingDescriptor(block.getNode(),
-                    new TextRange(block.getTextRange().getStartOffset(),
-                            block.getTextRange().getEndOffset() - (block.getText().endsWith(" ") ? 1 : 0))));
+            if (block.getTextRange().getLength() > 0) {
+                try {
+                    descriptors.add(new FoldingDescriptor(block.getNode(),
+                            new TextRange(block.getTextRange().getStartOffset(),
+                                    block.getTextRange().getEndOffset() - (block.getText().endsWith(" ") ? 1 : 0))));
+                } catch (Exception ignored) {
+                    descriptors.add(new FoldingDescriptor(block.getNode(),
+                            new TextRange(block.getTextRange().getStartOffset(),
+                                    block.getTextRange().getStartOffset() + 1)));
+                }
+            }
         }
 
         return descriptors.toArray(new FoldingDescriptor[0]);
@@ -63,5 +75,4 @@ public class MitsukoFoldingBuilder extends FoldingBuilderEx implements DumbAware
     public boolean isCollapsedByDefault(@NotNull ASTNode node) {
         return false;
     }
-
 }

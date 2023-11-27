@@ -14,6 +14,9 @@ public interface MitsukoLines extends PsiElement {
   List<MitsukoMultiline> getMultilineList();
 
   @NotNull
+  List<MitsukoNbt> getNbtList();
+
+  @NotNull
   List<MitsukoOneline> getOnelineList();
 
 }

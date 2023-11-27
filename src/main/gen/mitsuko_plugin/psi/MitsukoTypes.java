@@ -8,6 +8,7 @@ import mitsuko_plugin.psi.impl.*;
 
 public interface MitsukoTypes {
 
+  IElementType AT_LABEL = new MitsukoElementType("AT_LABEL");
   IElementType CONDITION = new MitsukoElementType("CONDITION");
   IElementType E_SELECTOR = new MitsukoElementType("E_SELECTOR");
   IElementType FLOW = new MitsukoElementType("FLOW");
@@ -25,8 +26,8 @@ public interface MitsukoTypes {
   IElementType PACK_FILE = new MitsukoElementType("PACK_FILE");
   IElementType PACK_TAG = new MitsukoElementType("PACK_TAG");
   IElementType SCOREBOARD = new MitsukoElementType("SCOREBOARD");
+  IElementType SCOREBOARD_NO_TEMP = new MitsukoElementType("SCOREBOARD_NO_TEMP");
   IElementType SHORT_SCORE = new MitsukoElementType("SHORT_SCORE");
-  IElementType TAG = new MitsukoElementType("TAG");
 
   IElementType BLOCK_CLOSE = new MitsukoTokenType("BLOCK_CLOSE");
   IElementType BLOCK_OPEN = new MitsukoTokenType("BLOCK_OPEN");
@@ -51,6 +52,7 @@ public interface MitsukoTypes {
   IElementType NBT_PROPERTY = new MitsukoTokenType("NBT_PROPERTY");
   IElementType NBT_STRING = new MitsukoTokenType("NBT_STRING");
   IElementType NBT_VALUE = new MitsukoTokenType("NBT_VALUE");
+  IElementType NOLEX = new MitsukoTokenType("NOLEX");
   IElementType PARENS = new MitsukoTokenType("PARENS");
   IElementType PIDENT = new MitsukoTokenType("PIDENT");
   IElementType SCOREBOARD_TEMP = new MitsukoTokenType("SCOREBOARD_TEMP");
@@ -61,7 +63,6 @@ public interface MitsukoTypes {
   IElementType SUB_2 = new MitsukoTokenType("SUB_2");
   IElementType SUB_CUSTOM = new MitsukoTokenType("SUB_CUSTOM");
   IElementType SUB_UNKNOWN = new MitsukoTokenType("SUB_UNKNOWN");
-  IElementType TAG_DEF = new MitsukoTokenType("TAG_DEF");
   IElementType TAG_NAME = new MitsukoTokenType("TAG_NAME");
   IElementType TAG_VALUE = new MitsukoTokenType("TAG_VALUE");
   IElementType VALUE = new MitsukoTokenType("VALUE");
@@ -69,7 +70,10 @@ public interface MitsukoTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == CONDITION) {
+      if (type == AT_LABEL) {
+        return new MitsukoAtLabelImpl(node);
+      }
+      else if (type == CONDITION) {
         return new MitsukoConditionImpl(node);
       }
       else if (type == E_SELECTOR) {
@@ -120,11 +124,11 @@ public interface MitsukoTypes {
       else if (type == SCOREBOARD) {
         return new MitsukoScoreboardImpl(node);
       }
+      else if (type == SCOREBOARD_NO_TEMP) {
+        return new MitsukoScoreboardNoTempImpl(node);
+      }
       else if (type == SHORT_SCORE) {
         return new MitsukoShortScoreImpl(node);
-      }
-      else if (type == TAG) {
-        return new MitsukoTagImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface MitsukoFor extends PsiElement {
 
   @NotNull
-  MitsukoScoreboard getScoreboard();
+  List<MitsukoScoreboard> getScoreboardList();
 
 }

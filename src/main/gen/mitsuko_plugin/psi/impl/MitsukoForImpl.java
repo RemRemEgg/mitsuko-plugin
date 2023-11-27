@@ -29,8 +29,8 @@ public class MitsukoForImpl extends ASTWrapperPsiElement implements MitsukoFor {
 
   @Override
   @NotNull
-  public MitsukoScoreboard getScoreboard() {
-    return findNotNullChildByClass(MitsukoScoreboard.class);
+  public List<MitsukoScoreboard> getScoreboardList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoScoreboard.class);
   }
 
 }

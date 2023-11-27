@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.remremegg'
-version '1.0'
+version '1.4'
 
 repositories {
     mavenCentral()
@@ -16,19 +16,24 @@ sourceSets {
         }
     }
 }
-
+tasks {
+    patchPluginXml {
+        sinceBuild.set("222.1")
+        untilBuild.set("")
+    }
+}
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    // testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    // testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = '2021.3.1'
+    version = '2023.2.2'
     plugins = ['com.intellij.java']
 }
 patchPluginXml {
-    changeNotes = """"""
+    changeNotes = """Added support for macros and RustRover"""
 }
 test {
     useJUnitPlatform()

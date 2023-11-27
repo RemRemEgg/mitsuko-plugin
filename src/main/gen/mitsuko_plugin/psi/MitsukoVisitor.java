@@ -7,6 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public class MitsukoVisitor extends PsiElementVisitor {
 
+  public void visitAtLabel(@NotNull MitsukoAtLabel o) {
+    visitPsiElement(o);
+  }
+
   public void visitCondition(@NotNull MitsukoCondition o) {
     visitPsiElement(o);
   }
@@ -75,11 +79,11 @@ public class MitsukoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitShortScore(@NotNull MitsukoShortScore o) {
+  public void visitScoreboardNoTemp(@NotNull MitsukoScoreboardNoTemp o) {
     visitPsiElement(o);
   }
 
-  public void visitTag(@NotNull MitsukoTag o) {
+  public void visitShortScore(@NotNull MitsukoShortScore o) {
     visitPsiElement(o);
   }
 

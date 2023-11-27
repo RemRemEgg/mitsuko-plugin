@@ -29,14 +29,14 @@ public class MitsukoFunctionFileImpl extends ASTWrapperPsiElement implements Mit
 
   @Override
   @NotNull
-  public List<MitsukoFunction> getFunctionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoFunction.class);
+  public List<MitsukoAtLabel> getAtLabelList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoAtLabel.class);
   }
 
   @Override
   @NotNull
-  public List<MitsukoTag> getTagList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoTag.class);
+  public List<MitsukoFunction> getFunctionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoFunction.class);
   }
 
 }

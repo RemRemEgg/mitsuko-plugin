@@ -40,12 +40,6 @@ public class MitsukoOnelineImpl extends ASTWrapperPsiElement implements MitsukoO
   }
 
   @Override
-  @NotNull
-  public List<MitsukoScoreboard> getScoreboardList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoScoreboard.class);
-  }
-
-  @Override
   @Nullable
   public MitsukoShortScore getShortScore() {
     return findChildByClass(MitsukoShortScore.class);

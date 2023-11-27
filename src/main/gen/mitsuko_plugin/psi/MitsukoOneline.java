@@ -13,9 +13,6 @@ public interface MitsukoOneline extends PsiElement {
   @NotNull
   List<MitsukoNbt> getNbtList();
 
-  @NotNull
-  List<MitsukoScoreboard> getScoreboardList();
-
   @Nullable
   MitsukoShortScore getShortScore();
 

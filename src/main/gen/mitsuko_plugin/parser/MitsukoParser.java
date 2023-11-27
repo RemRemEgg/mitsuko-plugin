@@ -36,6 +36,51 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // (FN_KEYWORD CRLF) | (FN_KEYWORD SUB_1 SUB_CUSTOM*)
+  public static boolean AT_LABEL(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AT_LABEL")) return false;
+    if (!nextTokenIs(b, FN_KEYWORD)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = AT_LABEL_0(b, l + 1);
+    if (!r) r = AT_LABEL_1(b, l + 1);
+    exit_section_(b, m, AT_LABEL, r);
+    return r;
+  }
+
+  // FN_KEYWORD CRLF
+  private static boolean AT_LABEL_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AT_LABEL_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, FN_KEYWORD, CRLF);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // FN_KEYWORD SUB_1 SUB_CUSTOM*
+  private static boolean AT_LABEL_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AT_LABEL_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, FN_KEYWORD, SUB_1);
+    r = r && AT_LABEL_1_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // SUB_CUSTOM*
+  private static boolean AT_LABEL_1_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "AT_LABEL_1_2")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!consumeToken(b, SUB_CUSTOM)) break;
+      if (!empty_element_parsed_guard_(b, "AT_LABEL_1_2", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
   // BLOCK_OPEN LINES BLOCK_CLOSE
   static boolean BLOCK(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "BLOCK")) return false;
@@ -52,8 +97,9 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // (BLOCK |
   //         MULTILINE |
-  //         FN_CALL |
-  //         ONELINE)+ CRLF
+  //         (FN_CALL ((NBT FN_CALL) | (SUB_CUSTOM+))?) |
+  //         ONELINE|
+  //         (NOLEX SUB_UNKNOWN))+ CRLF
   static boolean CODE(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "CODE")) return false;
     boolean r;
@@ -66,8 +112,9 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
 
   // (BLOCK |
   //         MULTILINE |
-  //         FN_CALL |
-  //         ONELINE)+
+  //         (FN_CALL ((NBT FN_CALL) | (SUB_CUSTOM+))?) |
+  //         ONELINE|
+  //         (NOLEX SUB_UNKNOWN))+
   private static boolean CODE_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "CODE_0")) return false;
     boolean r;
@@ -84,15 +131,84 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
 
   // BLOCK |
   //         MULTILINE |
-  //         FN_CALL |
-  //         ONELINE
+  //         (FN_CALL ((NBT FN_CALL) | (SUB_CUSTOM+))?) |
+  //         ONELINE|
+  //         (NOLEX SUB_UNKNOWN)
   private static boolean CODE_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "CODE_0_0")) return false;
     boolean r;
+    Marker m = enter_section_(b);
     r = BLOCK(b, l + 1);
     if (!r) r = MULTILINE(b, l + 1);
-    if (!r) r = consumeToken(b, FN_CALL);
+    if (!r) r = CODE_0_0_2(b, l + 1);
     if (!r) r = ONELINE(b, l + 1);
+    if (!r) r = CODE_0_0_4(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // FN_CALL ((NBT FN_CALL) | (SUB_CUSTOM+))?
+  private static boolean CODE_0_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "CODE_0_0_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, FN_CALL);
+    r = r && CODE_0_0_2_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // ((NBT FN_CALL) | (SUB_CUSTOM+))?
+  private static boolean CODE_0_0_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "CODE_0_0_2_1")) return false;
+    CODE_0_0_2_1_0(b, l + 1);
+    return true;
+  }
+
+  // (NBT FN_CALL) | (SUB_CUSTOM+)
+  private static boolean CODE_0_0_2_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "CODE_0_0_2_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = CODE_0_0_2_1_0_0(b, l + 1);
+    if (!r) r = CODE_0_0_2_1_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // NBT FN_CALL
+  private static boolean CODE_0_0_2_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "CODE_0_0_2_1_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = NBT(b, l + 1);
+    r = r && consumeToken(b, FN_CALL);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // SUB_CUSTOM+
+  private static boolean CODE_0_0_2_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "CODE_0_0_2_1_0_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SUB_CUSTOM);
+    while (r) {
+      int c = current_position_(b);
+      if (!consumeToken(b, SUB_CUSTOM)) break;
+      if (!empty_element_parsed_guard_(b, "CODE_0_0_2_1_0_1", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // NOLEX SUB_UNKNOWN
+  private static boolean CODE_0_0_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "CODE_0_0_4")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, NOLEX, SUB_UNKNOWN);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -223,7 +339,7 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // CODE_CUSTOM PARENS SCOREBOARD COMMA (PIDENT | VALUE) (COMMA (PIDENT | VALUE))? PARENS
+  // CODE_CUSTOM PARENS SCOREBOARD COMMA (PIDENT | VALUE | SCOREBOARD) (COMMA (PIDENT | VALUE | SCOREBOARD))? PARENS
   public static boolean FOR(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FOR")) return false;
     if (!nextTokenIs(b, CODE_CUSTOM)) return false;
@@ -239,23 +355,24 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // PIDENT | VALUE
+  // PIDENT | VALUE | SCOREBOARD
   private static boolean FOR_4(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FOR_4")) return false;
     boolean r;
     r = consumeToken(b, PIDENT);
     if (!r) r = consumeToken(b, VALUE);
+    if (!r) r = SCOREBOARD(b, l + 1);
     return r;
   }
 
-  // (COMMA (PIDENT | VALUE))?
+  // (COMMA (PIDENT | VALUE | SCOREBOARD))?
   private static boolean FOR_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FOR_5")) return false;
     FOR_5_0(b, l + 1);
     return true;
   }
 
-  // COMMA (PIDENT | VALUE)
+  // COMMA (PIDENT | VALUE | SCOREBOARD)
   private static boolean FOR_5_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FOR_5_0")) return false;
     boolean r;
@@ -266,12 +383,13 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // PIDENT | VALUE
+  // PIDENT | VALUE | SCOREBOARD
   private static boolean FOR_5_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FOR_5_0_1")) return false;
     boolean r;
     r = consumeToken(b, PIDENT);
     if (!r) r = consumeToken(b, VALUE);
+    if (!r) r = SCOREBOARD(b, l + 1);
     return r;
   }
 
@@ -291,7 +409,7 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // HEADER_FN_FILE (TAG|MSK_COMMENT|CRLF|FUNCTION)+
+  // HEADER_FN_FILE (AT_LABEL|MSK_COMMENT|CRLF|FUNCTION)+
   public static boolean FUNCTION_FILE(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FUNCTION_FILE")) return false;
     if (!nextTokenIs(b, HEADER_FN_FILE)) return false;
@@ -303,7 +421,7 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (TAG|MSK_COMMENT|CRLF|FUNCTION)+
+  // (AT_LABEL|MSK_COMMENT|CRLF|FUNCTION)+
   private static boolean FUNCTION_FILE_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FUNCTION_FILE_1")) return false;
     boolean r;
@@ -318,11 +436,11 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // TAG|MSK_COMMENT|CRLF|FUNCTION
+  // AT_LABEL|MSK_COMMENT|CRLF|FUNCTION
   private static boolean FUNCTION_FILE_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FUNCTION_FILE_1_0")) return false;
     boolean r;
-    r = TAG(b, l + 1);
+    r = AT_LABEL(b, l + 1);
     if (!r) r = consumeToken(b, MSK_COMMENT);
     if (!r) r = consumeToken(b, CRLF);
     if (!r) r = FUNCTION(b, l + 1);
@@ -602,8 +720,8 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (CODE_CUSTOM | COMMAND_START | SHORT_SCORE | VALUE) 
-  //             ((SCOREBOARD !(SCORE_OPERATION)) | VALUE | EQUALS | (E_SELECTOR !EQUALS) | 
+  // (CODE_CUSTOM | COMMAND_START | SHORT_SCORE | VALUE)
+  //             (VALUE | EQUALS | (E_SELECTOR !EQUALS) | 
   //             SUB_CUSTOM | PIDENT | EXE_SUB | SUB_1 | SUB_2 | SUB_UNKNOWN | NBT)*
   public static boolean ONELINE(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ONELINE")) return false;
@@ -626,7 +744,7 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ((SCOREBOARD !(SCORE_OPERATION)) | VALUE | EQUALS | (E_SELECTOR !EQUALS) | 
+  // (VALUE | EQUALS | (E_SELECTOR !EQUALS) | 
   //             SUB_CUSTOM | PIDENT | EXE_SUB | SUB_1 | SUB_2 | SUB_UNKNOWN | NBT)*
   private static boolean ONELINE_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ONELINE_1")) return false;
@@ -638,16 +756,15 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (SCOREBOARD !(SCORE_OPERATION)) | VALUE | EQUALS | (E_SELECTOR !EQUALS) | 
+  // VALUE | EQUALS | (E_SELECTOR !EQUALS) | 
   //             SUB_CUSTOM | PIDENT | EXE_SUB | SUB_1 | SUB_2 | SUB_UNKNOWN | NBT
   private static boolean ONELINE_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ONELINE_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = ONELINE_1_0_0(b, l + 1);
-    if (!r) r = consumeToken(b, VALUE);
+    r = consumeToken(b, VALUE);
     if (!r) r = consumeToken(b, EQUALS);
-    if (!r) r = ONELINE_1_0_3(b, l + 1);
+    if (!r) r = ONELINE_1_0_2(b, l + 1);
     if (!r) r = consumeToken(b, SUB_CUSTOM);
     if (!r) r = consumeToken(b, PIDENT);
     if (!r) r = consumeToken(b, EXE_SUB);
@@ -659,41 +776,20 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // SCOREBOARD !(SCORE_OPERATION)
-  private static boolean ONELINE_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ONELINE_1_0_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = SCOREBOARD(b, l + 1);
-    r = r && ONELINE_1_0_0_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // !(SCORE_OPERATION)
-  private static boolean ONELINE_1_0_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ONELINE_1_0_0_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NOT_);
-    r = !consumeToken(b, SCORE_OPERATION);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
   // E_SELECTOR !EQUALS
-  private static boolean ONELINE_1_0_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ONELINE_1_0_3")) return false;
+  private static boolean ONELINE_1_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ONELINE_1_0_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = E_SELECTOR(b, l + 1);
-    r = r && ONELINE_1_0_3_1(b, l + 1);
+    r = r && ONELINE_1_0_2_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // !EQUALS
-  private static boolean ONELINE_1_0_3_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ONELINE_1_0_3_1")) return false;
+  private static boolean ONELINE_1_0_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ONELINE_1_0_2_1")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NOT_);
     r = !consumeToken(b, EQUALS);
@@ -751,21 +847,33 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (E_SELECTOR EQUALS SCORE_NAME) | (SCOREBOARD_TEMP) | VALUE
+  // SCOREBOARD_NO_TEMP | SCOREBOARD_TEMP
   public static boolean SCOREBOARD(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SCOREBOARD")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, SCOREBOARD, "<scoreboard>");
-    r = SCOREBOARD_0(b, l + 1);
+    r = SCOREBOARD_NO_TEMP(b, l + 1);
     if (!r) r = consumeToken(b, SCOREBOARD_TEMP);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // (E_SELECTOR EQUALS SCORE_NAME) | VALUE
+  public static boolean SCOREBOARD_NO_TEMP(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SCOREBOARD_NO_TEMP")) return false;
+    if (!nextTokenIs(b, "<scoreboard no temp>", SELECTOR, VALUE)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, SCOREBOARD_NO_TEMP, "<scoreboard no temp>");
+    r = SCOREBOARD_NO_TEMP_0(b, l + 1);
     if (!r) r = consumeToken(b, VALUE);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   // E_SELECTOR EQUALS SCORE_NAME
-  private static boolean SCOREBOARD_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "SCOREBOARD_0")) return false;
+  private static boolean SCOREBOARD_NO_TEMP_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SCOREBOARD_NO_TEMP_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = E_SELECTOR(b, l + 1);
@@ -775,31 +883,42 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SCOREBOARD SCORE_OPERATION ((SCOREBOARD !(SCORE_OPERATION)) | PIDENT | ONELINE)?
+  // (SCOREBOARD SCORE_OPERATION ((SCOREBOARD !(SCORE_OPERATION)) | PIDENT | ONELINE)?) | SCOREBOARD
   public static boolean SHORT_SCORE(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SHORT_SCORE")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, SHORT_SCORE, "<short score>");
-    r = SCOREBOARD(b, l + 1);
-    r = r && consumeToken(b, SCORE_OPERATION);
-    r = r && SHORT_SCORE_2(b, l + 1);
+    r = SHORT_SCORE_0(b, l + 1);
+    if (!r) r = SCOREBOARD(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
+  // SCOREBOARD SCORE_OPERATION ((SCOREBOARD !(SCORE_OPERATION)) | PIDENT | ONELINE)?
+  private static boolean SHORT_SCORE_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SHORT_SCORE_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = SCOREBOARD(b, l + 1);
+    r = r && consumeToken(b, SCORE_OPERATION);
+    r = r && SHORT_SCORE_0_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   // ((SCOREBOARD !(SCORE_OPERATION)) | PIDENT | ONELINE)?
-  private static boolean SHORT_SCORE_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "SHORT_SCORE_2")) return false;
-    SHORT_SCORE_2_0(b, l + 1);
+  private static boolean SHORT_SCORE_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SHORT_SCORE_0_2")) return false;
+    SHORT_SCORE_0_2_0(b, l + 1);
     return true;
   }
 
   // (SCOREBOARD !(SCORE_OPERATION)) | PIDENT | ONELINE
-  private static boolean SHORT_SCORE_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "SHORT_SCORE_2_0")) return false;
+  private static boolean SHORT_SCORE_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SHORT_SCORE_0_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = SHORT_SCORE_2_0_0(b, l + 1);
+    r = SHORT_SCORE_0_2_0_0(b, l + 1);
     if (!r) r = consumeToken(b, PIDENT);
     if (!r) r = ONELINE(b, l + 1);
     exit_section_(b, m, null, r);
@@ -807,35 +926,23 @@ public class MitsukoParser implements PsiParser, LightPsiParser {
   }
 
   // SCOREBOARD !(SCORE_OPERATION)
-  private static boolean SHORT_SCORE_2_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "SHORT_SCORE_2_0_0")) return false;
+  private static boolean SHORT_SCORE_0_2_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SHORT_SCORE_0_2_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = SCOREBOARD(b, l + 1);
-    r = r && SHORT_SCORE_2_0_0_1(b, l + 1);
+    r = r && SHORT_SCORE_0_2_0_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // !(SCORE_OPERATION)
-  private static boolean SHORT_SCORE_2_0_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "SHORT_SCORE_2_0_0_1")) return false;
+  private static boolean SHORT_SCORE_0_2_0_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SHORT_SCORE_0_2_0_0_1")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NOT_);
     r = !consumeToken(b, SCORE_OPERATION);
     exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // TAG_DEF TAG_NAME EQUALS TAG_VALUE TAG_DEF
-  public static boolean TAG(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "TAG")) return false;
-    if (!nextTokenIs(b, TAG_DEF)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, TAG_DEF, TAG_NAME, EQUALS, TAG_VALUE, TAG_DEF);
-    exit_section_(b, m, TAG, r);
     return r;
   }
 

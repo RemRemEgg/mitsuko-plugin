@@ -44,7 +44,7 @@ public class MitsukoCompletionContributor extends CompletionContributor {
                 case "description": _add(r, "\u00a7"); break;
             }
         });
-        _extend(SUB_UNKNOWN, "advancement","attribute","bossbar","clear","clone","data","datapack","debug","defaultgamemode","difficulty","effect","enchant","execute","experience","fill","forceload","function","gamemode","gamerule","give","help","kick","kill","list","locate","loot","me","msg","particle","playsound","publish","recipe","reload","item","say","schedule","scoreboard","seed","setblock","setworldspawn","spawnpoint","spectate","spreadplayers","stopsound","summon","tag","team","teammsg","teleport","tell","tellraw","time","title","tm","tp","trigger","weather","worldborder","xp","jfr","place","fillbiome","ride","damage","exe","ast","set","if","while","loop","for","rmm","cmd","create","remove");
+        _extend(SUB_UNKNOWN, "return", "advancement","attribute","bossbar","clear","clone","data","datapack","debug","defaultgamemode","difficulty","effect","enchant","execute","experience","fill","forceload","function","gamemode","gamerule","give","help","kick","kill","list","locate","loot","me","msg","particle","playsound","publish","recipe","reload","item","say","schedule","scoreboard","seed","setblock","setworldspawn","spawnpoint","spectate","spreadplayers","stopsound","summon","tag","team","teammsg","teleport","tell","tellraw","time","title","tm","tp","trigger","weather","worldborder","xp","jfr","place","fillbiome","ride","damage","exe","ast","set","if","while","loop","for","rmm","cmd","create","remove");
     }
 
     public void _add(CompletionResultSet r, Object... s) {

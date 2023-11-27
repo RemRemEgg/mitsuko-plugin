@@ -1,5 +1,6 @@
 package mitsuko_plugin;
 
+import com.intellij.codeInsight.daemon.impl.GeneralHighlightingPass;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.HighlighterColors;
@@ -10,6 +11,7 @@ import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.ui.JBColor;
 import mitsuko_plugin.psi.MitsukoTypes;
+import org.jdesktop.swingx.decorator.Highlighter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -26,6 +28,8 @@ public class MitsukoSyntaxHighlighter extends SyntaxHighlighterBase {
             createTextAttributesKey("MSK_BRACES", HighlighterColors.NO_HIGHLIGHTING);
     public static final TextAttributesKey VALUE =
             createTextAttributesKey("MSK_VALUE", DefaultLanguageHighlighterColors.VALID_STRING_ESCAPE);
+    public static final TextAttributesKey ANNOTATION =
+            createTextAttributesKey("MSK_ANNOTATION", DefaultLanguageHighlighterColors.METADATA);
 
     public static final TextAttributesKey TAG_DEF =
             createTextAttributesKey("MSK_TAG_DEF", DefaultLanguageHighlighterColors.LINE_COMMENT);
@@ -87,6 +91,7 @@ public class MitsukoSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
     private static final TextAttributesKey[] BRACES_KEYS = new TextAttributesKey[]{BRACES};
     private static final TextAttributesKey[] VALUE_KEYS = new TextAttributesKey[]{VALUE};
+    private static final TextAttributesKey[] ANNOTATIONS = new TextAttributesKey[]{ANNOTATION};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
     private static final TextAttributesKey[] TAG_DEF_KEYS = new TextAttributesKey[]{TAG_DEF};
@@ -103,20 +108,20 @@ public class MitsukoSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] SUB_SUB_COMMAND_KEYS = new TextAttributesKey[]{SUB_SUB_COMMAND};
     private static final TextAttributesKey[] EXE_SUB_COMMAND_KEYS = new TextAttributesKey[]{EXE_SUB_COMMAND};
     private static final TextAttributesKey[] SUB_CUSTOM_KEYS = new TextAttributesKey[]{SUB_CUSTOM};
-    
+
     private static final TextAttributesKey[] FN_CALL_KEYS = new TextAttributesKey[]{FN_CALL};
-    
+
     private static final TextAttributesKey[] NUMBER_KEYS = new TextAttributesKey[]{NUMBER};
     private static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[]{STRING};
     private static final TextAttributesKey[] NBT_BRACES_KEYS = new TextAttributesKey[]{NBT_BRACES};
     private static final TextAttributesKey[] NBT_PROPERTY_KEYS = new TextAttributesKey[]{NBT_PROPERTY};
     private static final TextAttributesKey[] NBT_VALUE_KEYS = new TextAttributesKey[]{NBT_VALUE};
     private static final TextAttributesKey[] SELECTOR_KEYS = new TextAttributesKey[]{SELECTOR};
-    
+
     private static final TextAttributesKey[] SCORE_NAME_KEYS = new TextAttributesKey[]{SCORE_NAME};
     private static final TextAttributesKey[] SCORE_OPERATION_KEYS = new TextAttributesKey[]{SCORE_OPERATION};
     private static final TextAttributesKey[] SCORE_TEMP_KEYS = new TextAttributesKey[]{SCORE_TEMP};
-    
+
     private static final TextAttributesKey[] FLOW_CONTROL_KEYS = new TextAttributesKey[]{FLOW_CONTROL};
     private static final TextAttributesKey[] FLOW_PARENS_KEYS = new TextAttributesKey[]{FLOW_PARENS};
 
@@ -135,9 +140,6 @@ public class MitsukoSyntaxHighlighter extends SyntaxHighlighterBase {
         }
         if (tokenType.equals(MitsukoTypes.VALUE)) {
             return VALUE_KEYS;
-        }
-        if (tokenType.equals(MitsukoTypes.TAG_DEF)) {
-            return TAG_DEF_KEYS;
         }
         if (tokenType.equals(MitsukoTypes.TAG_VALUE)) {
             return TAG_VALUE_KEYS;
@@ -207,6 +209,9 @@ public class MitsukoSyntaxHighlighter extends SyntaxHighlighterBase {
         }
         if (tokenType.equals(MitsukoTypes.PARENS)) {
             return FLOW_PARENS_KEYS;
+        }
+        if (tokenType.equals(MitsukoTypes.NOLEX)) {
+            return ANNOTATIONS;
         }
         return EMPTY_KEYS;
     }

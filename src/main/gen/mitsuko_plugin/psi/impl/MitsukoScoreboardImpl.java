@@ -29,8 +29,8 @@ public class MitsukoScoreboardImpl extends ASTWrapperPsiElement implements Mitsu
 
   @Override
   @Nullable
-  public MitsukoESelector getESelector() {
-    return findChildByClass(MitsukoESelector.class);
+  public MitsukoScoreboardNoTemp getScoreboardNoTemp() {
+    return findChildByClass(MitsukoScoreboardNoTemp.class);
   }
 
 }

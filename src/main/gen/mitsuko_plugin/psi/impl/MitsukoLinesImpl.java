@@ -41,6 +41,12 @@ public class MitsukoLinesImpl extends ASTWrapperPsiElement implements MitsukoLin
 
   @Override
   @NotNull
+  public List<MitsukoNbt> getNbtList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoNbt.class);
+  }
+
+  @Override
+  @NotNull
   public List<MitsukoOneline> getOnelineList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, MitsukoOneline.class);
   }

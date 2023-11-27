@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface MitsukoFunctionFile extends PsiElement {
 
   @NotNull
-  List<MitsukoFunction> getFunctionList();
+  List<MitsukoAtLabel> getAtLabelList();
 
   @NotNull
-  List<MitsukoTag> getTagList();
+  List<MitsukoFunction> getFunctionList();
 
 }

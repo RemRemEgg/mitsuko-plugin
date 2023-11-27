@@ -3,13 +3,12 @@
     <name>Mitsuko</name>
     <vendor email="remremegg@gmail.com">RemRemEgg</vendor>
 
-    <description><![CDATA[Code Highlighting and Completion for Mitsuko
+    <description><![CDATA[Code Highlighting and Completion for Mitsuko v0.2
     <br><a href="https://github.com/RemRemEgg/mitsuko">Mitsuko on Github</a>]]></description>
 
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType
